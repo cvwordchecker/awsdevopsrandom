@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Randomized Study Grid</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #38bdf8;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-height: 120px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.4;
+            overflow: hidden;
+        }
+
+        /* Inner text wrapper so only text animates, not grid size */
+        .grid-text {
+            display: inline-block;
+            transform-origin: center;
+            transition: transform 0.2s ease;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Pulse animation for text only */
+        @keyframes pulseRedText {
+            0% {
+                color: var(--text-color);
+                transform: scale(1);
+            }
+            50% {
+                color: #ef4444;
+                transform: scale(1.1);
+            }
+            100% {
+                color: var(--text-color);
+                transform: scale(1);
+            }
+        }
+
+        .pulse-text {
+            animation: pulseRedText 2s ease-in-out;
+        }
+
+        /* Border accent colors */
+        .color-1 { border-top: 5px solid #f87171; }
+        .color-2 { border-top: 5px solid #fb923c; }
+        .color-3 { border-top: 5px solid #fbbf24; }
+        .color-4 { border-top: 5px solid #4ade80; }
+        .color-5 { border-top: 5px solid #22d3ee; }
+        .color-6 { border-top: 5px solid #818cf8; }
+        .color-7 { border-top: 5px solid #c084fc; }
+        .color-8 { border-top: 5px solid #f472b6; }
+
+    </style>
+</head>
+<body>
+
+    <h1>AWS Exam Quick-Fire</h1>
+    <div class="grid-container" id="studyGrid"></div>
+
+    <script>
+        const rawText = `DBstreams do not capture API calls
+CloudTrail do not have filters
+ECS logging with awslog
+CloudWatch cannot do directly to S3
+canar/linear only for lambda/ECS
+EC2 has in place only. Blue/Green for EC2, ECS Lambda
+ON premises has in place only
+Blue/Green not for on premises
+If you delete an instance from an ASG, it gets replaced
+Secrets manager does not support DynamoDB
+SSM cannot contain complex logic
+CloudTrail Logs are for streaming not bulk downloads
+CloudWatch can observe S3 API if CloudTrail enabled
+CNAME not supported by CloudFormation
+Subscriptions get real time logs from CloudWatchLogs
+Attach CloudWatch alarms to a CodeDeploy deployment group if You want automatic rollback on failure, best practice for production
+You use EventBridge (formerly CloudWatch Events) to monitor and react to Trusted Advisor check results.
+CloudWatch LogsMetric Filter -> Cloudwatch Metric -> Cloudwatch Alarm
+When creating a new API route, create a new API stage
+API GateWay can invoke StepFunctions
+CloudTrail can trigger CloudWatch Event to call SNS with a rule
+You need CloudWatch Metric for making graphs and alarms`;
+
+        let lines = rawText
+            .split('\n')
+            .filter(line => line.trim() !== "");
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const shuffledLines = shuffle(lines);
+        const container = document.getElementById('studyGrid');
+
+        shuffledLines.forEach((line, index) => {
+            const div = document.createElement('div');
+            div.className = `grid-item color-${(index % 8) + 1}`;
+
+            const span = document.createElement('span');
+            span.className = "grid-text";
+            span.textContent = line;
+
+            div.appendChild(span);
+            container.appendChild(div);
+        });
+
+        function triggerRandomPulse() {
+            const allText = [...document.querySelectorAll('.grid-text')];
+
+            // Clear any existing pulse classes first
+            allText.forEach(item => item.classList.remove('pulse-text'));
+
+            // Shuffle and select 3 random items
+            const selected = shuffle([...allText]).slice(0, 3);
+
+            selected.forEach(item => {
+                item.classList.add('pulse-text');
+
+                // Remove class after animation completes so it can re-trigger
+                setTimeout(() => {
+                    item.classList.remove('pulse-text');
+                }, 2000);
+            });
+        }
+
+        // Start immediately
+        triggerRandomPulse();
+
+        // Repeat continuously every 2.2 seconds
+        setInterval(triggerRandomPulse, 2200);
+    </script>
+
+</body>
+</html>
