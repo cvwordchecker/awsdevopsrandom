@@ -105,11 +105,19 @@
 
     <script>
         const rawText = `DBstreams do not capture API calls
+In AWS CloudFormation, ContinueUpdateRollback is used for a stack in the UPDATE_ROLLBACK_FAILED state to continue rolling it back to UPDATE_ROLLBACK_COMPLETE, which can help recover the stack after a failed update        
 CloudTrail do not have filters
 ECS logging is done with awslog
+Use AWS CodeDeploy with a Blue/Green deployment configuration and set the deployment settings to terminate the original instances in the deployment group
+you configure a filter policy on the SNS subscription, not on the SNS topic itself
+Topic = where messages are published, Subscription = who receives which messages, Filter policy = configured on the subscription
+CloudWatch is typically used for real-time monitoring and alerting rather than long-term detailed quarterly reports.
+For AWS WAF to successfully send logs directly to S3, the bucket name must start with the prefix aws-waf-logs-
 CloudWatch cannot do directly to S3
+AssumeRoleWithSAML is used for federation scenarios involving SAML-based identity providers
 canar/linear only for lambda/ECS
 EC2 has in place only. Blue/Green for EC2, ECS Lambda
+When an Auto Scaling group with a mixed instances policy scales in, Amazon EC2 Auto Scaling first determines whether to terminate a Spot or On-Demand instance, which can temporarily cause an Availability Zone imbalance
 ON premises has in place only
 Blue/Green not for on premises
 If you delete an instance from an ASG, it gets replaced
@@ -117,12 +125,14 @@ Secrets manager does not support DynamoDB
 SSM cannot contain complex logic
 CloudTrail Logs are for streaming not bulk downloads
 CloudWatch can observe S3 API if CloudTrail enabled
+You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
 CNAME not supported by CloudFormation
 Subscriptions get real time logs from CloudWatchLogs
 Attach CloudWatch alarms to a CodeDeploy deployment group if You want automatic rollback on failure, best practice for production
 You use EventBridge (formerly CloudWatch Events) to monitor and react to Trusted Advisor check results.
 CloudWatch LogsMetric Filter -> Cloudwatch Metric -> Cloudwatch Alarm
 When creating a new API route, create a new API stage
+You cannot use Amazon Athena to query logs published to Amazon CloudWatch Logs
 API GateWay can invoke StepFunctions
 CloudTrail can trigger CloudWatch Event to call SNS with a rule
 Enabling AWS Config is a prerequisite for using AWS Firewall Manager
