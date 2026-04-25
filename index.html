@@ -120,7 +120,12 @@ EC2 has in place only. Blue/Green for EC2, ECS Lambda
 When an Auto Scaling group with a mixed instances policy scales in, Amazon EC2 Auto Scaling first determines whether to terminate a Spot or On-Demand instance, which can temporarily cause an Availability Zone imbalance
 ON premises has in place only
 Blue/Green not for on premises
+In CodeBuild  encryption for build artifacts is enabled by default, and uses AWS managed keys (AWS KMS)
+Amazon FSx for Lustre makes S3 objects appear as files
+GuardDuty analyzes and processes VPC flow log, AWS CloudTrail event log, and DNS log data sources
+buildspec file with a post_build phase pushes a Docker image to Amazon ECR
 If you delete an instance from an ASG, it gets replaced
+You can use a Lambda function to process Amazon Simple Notification Service (Amazon SNS) notifications. Amazon SNS supports Lambda functions as a target for messages sent to a topic
 Secrets manager does not support DynamoDB
 SSM cannot contain complex logic
 CloudTrail Logs are for streaming not bulk downloads
