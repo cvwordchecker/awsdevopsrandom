@@ -128,7 +128,18 @@ If you delete an instance from an ASG, it gets replaced
 You can use a Lambda function to process Amazon Simple Notification Service (Amazon SNS) notifications. Amazon SNS supports Lambda functions as a target for messages sent to a topic
 Secrets manager does not support DynamoDB
 SSM cannot contain complex logic
+API actions are tracked by AWS CloudTrail but not by Amazon CloudWatch
+Tags are not propagated to Amazon EBS volumes. To add tags to Amazon EBS volumes, specify the tags in a launch template
+Amazon GuardDuty is a threat detection service that continuously monitors for malicious activity and unauthorized behavior to protect your AWS accounts, EC2 workloads, container applications, and data stored in Amazon Simple Storage Service (S3)
+An EC2 instance is scheduled for retirement when AWS detects an irreparable failure in the infrastructure that's hosting your instance. You are required to stop and then start the instance at your preferred time before the instance retirement date. Stopping and starting the instance moves the instance to another healthy host
+The DevOps engineer can add a lifecycle hook to the AWS Auto Scaling group to move instances in the Terminating state to the Terminating:Wait state. In this state, the engineer can access instances before they're terminated, and then troubleshoot why they were marked as unhealthy
+You can create custom metrics to send to Amazon CloudWatch. With custom metrics you can choose standard or high resolution and you can aggregate multiple data points and publish data as a statistic set to reduce cost and increase efficiency.The resolutions are:Standard resolution, with data having a one-minute granularity and High resolution, with data at a granularity of one second.
 CloudTrail Logs are for streaming not bulk downloads
+Amazon API Gateway endpoints are exposed over HTTPS only, meaning traffic is encrypted in transit using TLS; it does not provide plain HTTP endpoints for invoking APIs
+The serverless services can be deployed via SAM but should then be updated via the sam deploy command.
+You cannot use Elastic Beanstalk to deploy these serverless services
+AWS Config can be used to report on compliance but cannot stop  creationof services
+EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
 You cannot use any S3 API to invalidate the CloudFront cache
 You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
