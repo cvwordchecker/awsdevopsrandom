@@ -163,6 +163,7 @@ AWS CloudFormation stack sets allow for automatic deployment of configurations a
 You cannot use any S3 API to invalidate the CloudFront cache
 You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
 CNAME not supported by CloudFormation
+ALB access logs are actually stored in Amazon S3, not sent directly to Amazon CloudWatch Logs
 Subscriptions get real time logs from CloudWatchLogs
 Attach CloudWatch alarms to a CodeDeploy deployment group if You want automatic rollback on failure, best practice for production
 You use EventBridge (formerly CloudWatch Events) to monitor and react to Trusted Advisor check results.
