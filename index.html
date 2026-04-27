@@ -157,6 +157,9 @@ You cannot use Elastic Beanstalk to deploy these serverless services
 AWS Config can be used to report on compliance but cannot stop  creationof services
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+CloudWatch Logs subscriptions cannot direct events to AWS Step Functions as a destination
+CloudWatch Logs subscription filter can directly trigger Lambda functions in real time
+AWS CloudFormation stack sets allow for automatic deployment of configurations across multiple accounts in AWS Organizations
 You cannot use any S3 API to invalidate the CloudFront cache
 You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
 CNAME not supported by CloudFormation
