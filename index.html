@@ -164,6 +164,17 @@ You cannot use Elastic Beanstalk to deploy these serverless services
 AWS Config can be used to report on compliance but cannot stop  creationof services
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+removing the --acl authenticated-read option prevents broad access to your S3 artifacts by all AWS users, and implementing a targeted bucket policy ensures that only specified AWS accounts can access the objects, providing you with a secure and manageable access control mechanism
+S3 server access logging provides detailed insights into file access with minimal setup, while using Amazon Athena allows you to query these logs quickly with standard SQL, eliminating the need for complex data pipelines or additional infrastructure
+AWS CodeDeploy with a blue/green deployment configuration allows you to seamlessly launch a new fleet of instances, redirect traffic only when the new instances are ready, and automatically terminate the old fleet after a specified waiting period
+CodePipeline automates the workflow, CodeBuild tests your application, and CodeDeploy manages ALB interactions and service restarts efficiently through the appspec.yml file
+Creating a CloudWatch alarm for the StatusCheckFailed System metric ensures that your EC2 instance can be automatically recovered from issues related to hardware or network failures, thus safeguarding your data and minimizing downtime
+Enabling CloudWatch Logs for EKS components allows you to log events in real time, and using subscription filters with Lambda ensures that you can respond to specific log events quickly and efficiently, providing the granular control needed for your automated notifications
+AWS Health can directly trigger a Systems Manager document that automates the restart of your EC2 instance during maintenance events, simplifying the process and reducing complexity
+Storing an AWS access key (especially a long-lived IAM user access key) in an Amazon Web Services AWS Systems Manager SecureString parameter is safer than storing it in plain text, because SecureString encrypts the value using AWS Key Management Service (KMS). However, it is still considered a less secure practice compared to using temporary credentials through IAM roles
+Enabling dualstack mode on the ALB allows it to handle both IPv4 and IPv6 traffic, which is essential for supporting clients with IPv6 addresses
+AWS Config can continuously monitor KMS keys and assess their compliance
+Amazon EventBridge rule that reacts to EC2 StartInstances API calls only covers situations where a stopped instance is restarted
 You cannot use any S3 API to invalidate the CloudFront cache
 You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
 CNAME not supported by CloudFormation
