@@ -147,7 +147,14 @@ An EC2 instance is scheduled for retirement when AWS detects an irreparable fail
 The DevOps engineer can add a lifecycle hook to the AWS Auto Scaling group to move instances in the Terminating state to the Terminating:Wait state. In this state, the engineer can access instances before they're terminated, and then troubleshoot why they were marked as unhealthy
 You can create custom metrics to send to Amazon CloudWatch. With custom metrics you can choose standard or high resolution and you can aggregate multiple data points and publish data as a statistic set to reduce cost and increase efficiency.The resolutions are:Standard resolution, with data having a one-minute granularity and High resolution, with data at a granularity of one second.
 CloudTrail Logs are for streaming not bulk downloads
+Use EventBridge to capture the real-time workflows of CodePipeline, allowing you to funnel relevant state changes to an SNS topic, which can then trigger notifications or other automated actions based on the pipeline's progress and status
+AWS CodePipeline state change events (such as pipeline execution changes, stage changes, or action state changes) are typically emitted to Amazon EventBridge, allowing you to set up rules that trigger on specific pipeline events. However, AWS Config is not designed to monitor or react to CodePipeline state changes, as it focuses on resource configuration compliance rather than event-driven monitoring of pipeline executions.
+Configuring an EventBridge event to invoke the RefreshCache command effectively updates the Storage Gateway's cache
+Using IAM roles allows your EC2 instances to securely access AWS services with temporary credentials, eliminating the risk associated with static access keys
+By configuring provisioned concurrency, you ensure that your Lambda function has pre-warmed instances available, reducing cold start latency. Pairing this with AWS Application Auto Scaling allows the function to dynamically adjust the number of warm instances based on traffic, ensuring consistent performance during peak usage
  You cannot deploy unencrypted HTTP endpoints with API Gateway
+ In AWS Control Tower Customizations for AWS Control Tower (CfCT) solution is specifically designed to automate the deployment of resources when new accounts are created
+No point in using  bash scripts for managing ALB deregistration and re-registration, this process is already handled natively by AWS CodeDeploy deployment groups. Utilizing bash scripts for these tasks contradicts the goal of transitioning to AWS-native tools, which is intended to simplify and automate your deployment process.
 You cannot use an NLB for routing to targets based on path values in the requests, IP-based routing is  supported only on the ALB
 Although Parameter Store supports hierarchical data and versioning in the advanced tier, it has a size limit of 8 KB per parameter and becomes harder to manage at scale compared to S3
 Although Secrets Manager supports up to 64 KB per secret, it is designed for managing sensitive credentials rather than large, growing sets of configuration files
@@ -157,9 +164,6 @@ You cannot use Elastic Beanstalk to deploy these serverless services
 AWS Config can be used to report on compliance but cannot stop  creationof services
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
-CloudWatch Logs subscriptions cannot direct events to AWS Step Functions as a destination
-CloudWatch Logs subscription filter can directly trigger Lambda functions in real time
-AWS CloudFormation stack sets allow for automatic deployment of configurations across multiple accounts in AWS Organizations
 You cannot use any S3 API to invalidate the CloudFront cache
 You can verify the integrity of your object after uploading by calculating its MD5 digest and including it in the PUT request using the Content-MD5 header
 CNAME not supported by CloudFormation
