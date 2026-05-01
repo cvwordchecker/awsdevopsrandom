@@ -277,8 +277,8 @@ You need CloudWatch Metric for making graphs and alarms`;
             // Clear any existing pulse classes first
             allText.forEach(item => item.classList.remove('pulse-text'));
 
-            // Shuffle and select 3 random items
-            const selected = shuffle([...allText]).slice(0, 3);
+            // Shuffle and select 10 random items
+            const selected = shuffle([...allText]).slice(0, 10);
 
             selected.forEach(item => {
                 item.classList.add('pulse-text');
