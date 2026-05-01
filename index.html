@@ -163,11 +163,23 @@ Although Secrets Manager supports up to 64 KB per secret, it is designed for man
 Amazon API Gateway endpoints are exposed over HTTPS only, meaning traffic is encrypted in transit using TLS; it does not provide plain HTTP endpoints for invoking APIs
 The serverless services can be deployed via SAM but should then be updated via the sam deploy command.
 You cannot use Elastic Beanstalk to deploy these serverless services
+Use AWS Proton to build a service template for refactoring the on-premises application to a container running on Amazon EKS Distro
+Elastic Load Balancing provides access logs that capture detailed information about requests sent to your load balancer. Each log contains information such as the time the request was received, the client's IP address, latencies, request paths, and server responses. You can use these access logs to analyze traffic patterns and troubleshoot issues
+Service Catalog provides a centralized way to manage approved infrastructure templates as products. Portfolio constraints enforce security standards by restricting which parameters can be modified and what values are allowed. Launch constraints control who can provision resources, while template constraints ensure critical security configurations cannot be modified
 CloudFormation's UpdatePolicy for rolling updates does not provide a way to validate the new application version before routing production traffic to it
 AWS Config can be used to report on compliance but cannot stop  creationof services
 Amazon ECR requires authentication before allowing Docker operations, unlike S3. By using the aws ecr get-login-password command, you obtain the necessary authentication token, enabling you to successfully log in and push images to your ECR repository.
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that are aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs
+You can create one or more aliases for your Lambda function. A Lambda alias is like a pointer to a specific function version. Users can access the function version using the alias Amazon Resource Name (ARN). You can add multiple versions of a function to an alias and configure a weighting to direct percentages of traffic to one version or another
+Elastic Beanstalk uses ELB health checks (basic health), or with enhanced health it monitors application logs and the state of your environment's other resources. It does not use CloudWatch alarms
+Amazon AppFlow is used to automate bi-directional data flows between SaaS applications and AWS services.
+AWS Copilot to analyze and inventory the on-premises application and then containerize it on Amazon ECS
+AWS Proton is used to create application stack templates and build infrastructure for applications using the CLI, API, or UI
+Blue/green deployments with CodeDeploy for ECS allow the team to deploy a new version alongside the existing version and gradually shift traffic to the new version
+AWS Systems Manager Incident Manager is an AWS service designed to help you prepare for, respond to, and recover from incidents (like outages, performance issues, or security events) in your applications
+Amazon DevOps Guru is an AWS service that uses machine learning to automatically detect and diagnose operational issues in your applications—often before they impact users
 With AWS CodeDeploy blue/green deployments for Amazon ECS, CodeDeploy creates a replacement (green) task set alongside the existing (blue) one, optionally routes test traffic to it through a separate test listener for validation, and then shifts production traffic based on the deployment configuration. The traffic shift can be configured as canary, linear, or all-at-once, with predefined options such as shifting 10% first and the rest after 5 or 15 minutes, or shifting 10% every 1 or 3 minutes. AWS also supports custom linear and canary configurations
 CloudFormation's rolling updates for ECS services don't support gradual traffic shifting - they replace tasks with the new version without the ability to route only a percentage of traffic to the new version.
 CloudHSM gives the company complete control over their encryption keys in dedicated hardware security modules, KMS enables automatic key rotation on a schedule, key policies ensure tight access restrictions, and CloudTrail logs all key operations for audit purposes
