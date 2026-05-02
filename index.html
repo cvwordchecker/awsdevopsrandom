@@ -168,13 +168,17 @@ Elastic Load Balancing provides access logs that capture detailed information ab
 Service Catalog provides a centralized way to manage approved infrastructure templates as products. Portfolio constraints enforce security standards by restricting which parameters can be modified and what values are allowed. Launch constraints control who can provision resources, while template constraints ensure critical security configurations cannot be modified
 CloudFormation's UpdatePolicy for rolling updates does not provide a way to validate the new application version before routing production traffic to it
 AWS Config can be used to report on compliance but cannot stop  creationof services
+Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that are aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs
 Amazon ECR requires authentication before allowing Docker operations, unlike S3. By using the aws ecr get-login-password command, you obtain the necessary authentication token, enabling you to successfully log in and push images to your ECR repository.
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+CloudFormation can be used to deploy both the AWS Lambda function and API Gateway REST API
 Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that are aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs
 You can create one or more aliases for your Lambda function. A Lambda alias is like a pointer to a specific function version. Users can access the function version using the alias Amazon Resource Name (ARN). You can add multiple versions of a function to an alias and configure a weighting to direct percentages of traffic to one version or another
 Elastic Beanstalk uses ELB health checks (basic health), or with enhanced health it monitors application logs and the state of your environment's other resources. It does not use CloudWatch alarms
 Amazon AppFlow is used to automate bi-directional data flows between SaaS applications and AWS services.
+An AWS Lambda hook is one Lambda function specified with a string on a new line after the name of the lifecycle event. Each hook is executed once per deployment. Here are descriptions of the hooks available for use in your AppSpec file.
+Hooks available for use in  AppSpec file. BeforeAllowTraffic – Use to run tasks before traffic is shifted to the deployed Lambda function version. AfterAllowTraffic – Use to run tasks after all traffic is shifted to the deployed Lambda function version
 AWS Copilot to analyze and inventory the on-premises application and then containerize it on Amazon ECS
 AWS Proton is used to create application stack templates and build infrastructure for applications using the CLI, API, or UI
 Blue/green deployments with CodeDeploy for ECS allow the team to deploy a new version alongside the existing version and gradually shift traffic to the new version
