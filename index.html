@@ -181,7 +181,17 @@ Amazon AppFlow is used to automate bi-directional data flows between SaaS applic
 An AWS Lambda hook is one Lambda function specified with a string on a new line after the name of the lifecycle event. Each hook is executed once per deployment. Here are descriptions of the hooks available for use in your AppSpec file.
 Hooks available for use in  AppSpec file. BeforeAllowTraffic – Use to run tasks before traffic is shifted to the deployed Lambda function version. AfterAllowTraffic – Use to run tasks after all traffic is shifted to the deployed Lambda function version
 AWS Copilot to analyze and inventory the on-premises application and then containerize it on Amazon ECS
- AWS Config does not send evaluation results directly to SNS in a way that provides the detailed information
+The CodeDeploy agent on EC2 instances uses the attached instance profile to authenticate with AWS services like S3 to download the application revision. Without the correct instance profile permissions, the agent cannot fetch the deployment package, causing deployments to be skipped
+If throttling is the issue for a lambda function, increasing timeout does not help, increasing the concurrency limit
+ AWS Config does not send evaluation results directly to SNS in a way that provides the detailed informationALBs do not support cross-Region target groups
+ Cognito user pools are designed for application-level user authentication, not for managing AWS account access
+ AWS Config managed rules can detect and flag resources that are not compliant with a policy, but they cannot automatically remediate by attaching WAF web ACLs on their own. Config is for detection and reporting, while Firewall Manager is the correct tool for automatic enforcement
+ The X-Ray daemon runs as a background process that collects and batches segments before uploading them asynchronously to X-Ray. This means the application does not wait for the upload during request processing, allowing full tracing without adding latency to API responses
+ The CloudWatch agent can collect logs and metrics from on-premises servers and is a valid approach for gathering server-side data. It runs as a background process and uploads data asynchronously, so it does not add latency to the actual API requests
+ The SSM Agent on EC2 instances communicates with the SSM service endpoint over HTTPS on port 443. If the security group blocks this outbound traffic, the SSM Agent cannot connect to SSM and Inspector cannot scan the instance
+ CodeDeploy deployment groups do not have a built-in manual approval feature. Approval gates must be configured within CodePipeline as a dedicated approval action stage, not inside the CodeDeploy configuration itself
+ CodeDeploy's AppSpec lifecycle hooks like BeforeInstall are designed exactly for running pre-deployment tasks like clearing a local cache. This ensures the cache is always cleared automatically as part of every deployment without manual intervention
+ A redrive policy for AWS SQS moves failed messages to a dead-letter queue to handle errors, but it does nothing to speed up processing of healthy messages
 CloudWatch Logs subscriptions cannot target AWS Step Functions as a destination. The valid destinations for these subscriptions are Lambda functions, Kinesis Data Streams, and Kinesis Data Firehose
 the restricted-ssh AWS Config managed rule specifically checks for any security group that allows unrestricted SSH access from all IP addresses
 AWS Proton is used to create application stack templates and build infrastructure for applications using the CLI, API, or UI
