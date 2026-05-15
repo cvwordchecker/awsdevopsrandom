@@ -183,9 +183,53 @@ An AWS Lambda hook is one Lambda function specified with a string on a new line 
 Hooks available for use in  AppSpec file. BeforeAllowTraffic – Use to run tasks before traffic is shifted to the deployed Lambda function version. AfterAllowTraffic – Use to run tasks after all traffic is shifted to the deployed Lambda function version
 AWS Copilot to analyze and inventory the on-premises application and then containerize it on Amazon ECS
 IAM permissions boundaries define the maximum permissions an entity can have.
+The CloudWatch agent and AWS SDKs use HTTPS/TLS 1.2 for all API calls to CloudWatch endpoints, ensuring in-transit encryption. KMS is for at-rest. SigV4 signs requests but TLS provides encryption
+Dimensions are name/value pairs that uniquely identify a metric. You can assign up to 30 dimensions to a metric, and you can use up to 10 dimensions as part of your unique identifier for a metric. Dimensions are used to filter and aggregate metrics in CloudWatch.
+VPC Flow Logs can publish to CloudWatch Logs in near real-time. From CloudWatch Logs, you can create a subscription filter to Kinesis Data Firehose or Lambda for immediate processing.
+CloudWatch agent's disk_buffer (with buffer_duration) prevents data loss during network issues; local encryption via OS-level disk encryption secures buffered data.
+Metric is uniquely defined by namespace, metric name, and all dimensions; each dimension combination creates a separate time series, affecting billing and CloudWatch limits
+CloudWatch Logs Data Protection is a native feature that allows you to define a data protection policy on a log group. The policy uses AWS-managed data identifiers (regex + context patterns) that recognize PII types including SSNs, credit card numbers, and more. Matched data is automatically masked (replaced with *****) at read time — no application changes or Lambda functions required
 CodeBuild natively integrates with Secrets Manager and SSM Parameter Store via the SECRETS_MANAGER and PARAMETER_STORE environment variable types
 OIDC federation is the modern best practice for CI/CD authentication. It eliminates long-term credentials by allowing GitHub Actions to assume IAM roles using short-lived tokens
 CloudTrail Organization Trail centralizes logs from all accounts. 
+In EC2 Image Builder, a Component defines reusable automation steps (like installing software or running tests), while a Recipe combines Components and specifies the base image to create an AMI. This modular approach allows for consistent, repeatable image builds across environments.
+Argo Rollouts is widely considered one of the leading Kubernetes-native progressive delivery solutions.It extends Kubernetes deployment capabilities beyond standard Deployment objects by providing advanced rollout strategies like canary, blue/green, and rolling updates with fine-grained traffic control and automated analysis of metrics to determine rollout success or failure.
+An ECR resource-based policy restricts who can pull from ECR, while an AWS Config rule (e.g., custom or managed) continuously evaluates ECS task definitions to detect images sourced outside ECR
+ EC2 Image Builder has native Lifecycle Policies (introduced in 2023) that can automatically deprecate and delete AMIs plus their associated EBS snapshots after a defined retention period, eliminating the need for custom Lambda logic
+DrainTraffic hook timeouts occur when Application Load Balancer target group health checks fail during deployment traffic draining
+AWS AppConfig provides fine-grained control over feature flags and canary deployments, including gradual traffic shifting percentages.
+Blue/green deployments enable zero-downtime deployments by maintaining two identical environments and switching traffic between them
+IAM roles with least privilege principles provide secure, temporary credentials for CI/CD pipelines accessing CodeArtifact
+The Image Recipe in EC2 Image Builder defines the base image, components, and customization steps that generate the final AMI artifact
+Artifact expiration policies and versioning in CodeBuild/S3 optimize storage costs while maintaining necessary build history 
+S3 Event Notifications → Lambda → OpenSearch is the canonical serverless pattern. S3 triggers Lambda on s3:ObjectCreated:*; Lambda parses the log and indexes it to OpenSearch via the REST API
+AWS Config continuously evaluates resources against rules (e.g., s3-bucket-public-access-prohibited). When a rule is violated, Config can trigger an SSM Automation document as a remediation action — this is the native, built-in mechanism for automatic remediation without needing custom Lambda functions or external automation.
+TargetResponseTime measures how long backend targets take to respond, making it the right metric for monitoring application performance and user experience, while RequestCount tracks the number of requests and is more suitable for monitoring traffic volume and load.
+CloudWatch Anomaly Detection uses ML to establish baseline patterns and detect anomalies automatically
+HTTPCode_Target_5XX_Count tracks 5xx errors returned by targets behind the ALB
+CloudWatch Logs Insights uses pipes (|) for filtering and aggregation with stats count(*) by requestId
+S3 bucket policy changes generate events with eventSource: s3.amazonaws.com
+ECR private repositories with IAM policies and image scanning (via ECR Image Scanning) provide secure artifact management with vulnerability detection
+RDS Storage Autoscaling automatically increases storage when free space is low 
+DiskQueueDepth measures the number of I/O requests waiting in the queue. A sustained value above 1 indicates I/O saturation, which can lead to increased latency and degraded performance. Monitoring this metric helps identify when your database is under heavy load and may require scaling or optimization.
+ALB default success codes are 200-399. You can customize this range
+EventBridge event patterns use source and detail-type for S3 Object Created events
+CloudWatch cross-account observability enables native aggregation of metrics/logs from multiple accounts into a monitoring account while preserving metadata
+Subscription filters with Firehose provide near real-time, managed streaming of CloudWatch Logs to a central account.
+Namespaces group metrics; dimensions are key–value pairs used to slice metrics such as service and environment.
+Amazon ECR enhanced scanning (powered by Amazon Inspector) provides automated vulnerability scanning of container images with continuous scanning, detailed findings, and filtering capabilities.
+On-premises instances using the CodeDeploy agent with IAM roles rely on temporary credentials that are periodically refreshed. If the deployment recently started failing and the IAM role hasn't changed, the most likely cause is expired or invalid temporary credentials. Restarting the CodeDeploy agent forces it to refresh credentials, which can resolve the issue without needing to modify IAM permissions or instance profiles.
+Immutable deployments require that each deployment is a complete, self-contained unit that is not modified after deployment. The core principle is that configuration should be baked into the artifact (container image) or provided via external configuration stores (Parameter Store, Secrets Manager) at startup, not modified on shared storage after deployment.
+AWS App Mesh is a service mesh that provides application-level networking for microservices, including traffic routing, observability, and security. It supports canary deployments with weighted traffic splitting between virtual service versions and integrates with CloudWatch for metrics-based automatic rollback. 
+The file codedeployagent.yml (located at /etc/codedeploy-agent/conf/codedeployagent.yml) controls agent behavior, including proxy, logging level, and root directory.
+Lambda weighted aliases let you route a percentage of traffic to a new version 
+Amazon EFS supports ReadWriteMany access mode across multiple pods in EKS, while EBS supports only ReadWriteOnce for single-node access. For shared storage across multiple instances, EFS is the appropriate choice.
+AWS Secrets Manager integrates natively with CodeBuild via the env secrets-manager buildspec block
+CodeArtifact authorization tokens are short-lived (12-hour default, configurable up to 12 hours). The buildspec must dynamically fetch a token using aws codeartifact get-authorization-token at build start and configure the npm registry URL with that token. 
+CodeBuild batch builds allow you to split a buildspec into parallel build groups that run concurrently.Batch builds are one of the most effective ways to reduce CI/CD pipeline duration in large-scale environments.
+Amazon ECR enhanced scanning with Amazon Inspector provides automated, continuous vulnerability scanning with detailed findings. AWS Signer (AWS Signer) enables native container image signing using Notation
+CDK Constructs or CloudFormation Modules allow you to create reusable, versioned pipeline components with mandatory security stages that cannot be bypassed. Publishing as an internal library enables standardization while allowing customization of non-mandatory stages. 
+S3 caching in CodeBuild allows dependencies to persist between builds, dramatically reducing download times. Docker layer caching speeds up container builds
 After pushing to ECR with scan-on-push enabled, a CodeBuild action can call ecr:DescribeImageScanFindings, parse the results for CRITICAL severity counts, and exit non-zero to fail the pipeline stage if violations are found. This is a programmatic, synchronous quality gate fully integrated into the pipeline flow
 Using Amazon Elastic Container Registry image scanning together with AWS CodeBuild is a common pattern for implementing a security quality gate in CI/CD pipelines
 Setting minimumHealthyPercent to 100 ensures ECS never terminates old tasks until replacement tasks are healthy and passing load balancer health checks. Setting maximumPercent to 200 allows twice the desired count to run simultaneously, enabling zero-downtime rolling deployments by always having a full fleet available
