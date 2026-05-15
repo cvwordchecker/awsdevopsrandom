@@ -128,14 +128,25 @@ buildspec file with a post_build phase pushes a Docker image to Amazon ECR
 If you delete an instance from an ASG, it gets replaced
 You can use a Lambda function to process Amazon Simple Notification Service (Amazon SNS) notifications. Amazon SNS supports Lambda functions as a target for messages sent to a topic
 Secrets manager does not support DynamoDB
+Amazon GuardDuty's "Policy:IAMUser/RootCredentialUsage" finding type detects root credential usage and is triggered when the root user credentials are used to make API calls, which is a critical security concern. This finding helps identify potential unauthorized access or misuse of the root account, allowing you to take immediate action to secure your AWS environment.
+AWS Control Tower provides the Account Factory for automated account provisioning with pre-configured baselines (logging, security). Guardrails (both preventive via SCPs and detective via AWS Config rules) enforce policies like network isolation between OUs
+CDK Constructs published as versioned libraries to a private npm repository (AWS CodeArtifact) allow teams to consume pre-approved, reusable infrastructure components. This approach enforces security standards by embedding compliant defaults
+AWS Control Tower automates account provisioning with guardrails, but does not manage application-level configuration or deployments like Systems Manager State Manager or CodeDeploy.
+AWS Security Hub provides a comprehensive view of security state across multiple AWS accounts and integrates findings from GuardDuty, Config, and other services
+ Systems Manager State Manager uses SSM Documents (YAML/JSON) to declare desired configuration, works with managed instances (on-prem & cloud) and automatically corrects drift via associations, but it does not support complex logic or application-level configuration management like Chef or Puppet.
+State Manager is part of AWS Systems Manager and supports declarative desired state configuration, auto‑remediation via associations, works with hybrid instances via SSM Agent.
+AWS CDK lets developers use general-purpose languages (TypeScript, Python, Java) to define cloud infrastructure with full programming logic and share constructs as libraries
+SCPs are attached to OUs or accounts and affect all principals (including root). They provide preventive governance at the organization level.
 When you create a protection pack (web ACL), you can specify one or more CloudFront distributions that you want AWS WAF to inspect
 You cannot use a TCP listener with an ALB. It must be HTTP or HTTPS though a custom port number can certainly be used
 SSM cannot contain complex logic
+ AWS Control Tower automates multi-account setup, enforces guardrails via SCPs and Config rules, and includes Account Factory for automated account provisioning.
 Tag Editor is a tool in the Amazon Web Services AWS Management Console that lets you view, search, add, edit, and delete tags across multiple AWS resources and services from one place.
 You cannot create an HTTPS listener with an NLB
 CloudFormation stacks are best used for infrastructure deployments and updates and not for application/code level changes
 Amazon CloudWatch alarm that monitors an Amazon EC2 instance and automatically recovers the instance if it becomes impaired due to an underlying hardware failure or a problem that requires AWS involvement to repair.The alarm uses the StatusCheckFailed_System metric and can be configured to initiate a recover action
 You can monitor CodePipeline events in EventBridge
+ StackSets enable centralized deployment of CloudFormation stacks across multiple accounts and regions from a management account
 You can associate more than one deployment group with an application in CodeDeploy. This makes it possible to deploy an application revision to different sets of instances at different times or in parallel
 EventBridge routes that data to targets such as AWS Lambda and Amazon Simple Notification Service
 With a CodeDeploy ‘CodeDeployDefault.HalfAtAtime’ deployment strategy, half of the instances will be updated at a time
