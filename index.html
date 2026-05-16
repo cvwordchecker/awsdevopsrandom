@@ -172,12 +172,15 @@ Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto S
 Amazon ECR requires authentication before allowing Docker operations, unlike S3. By using the aws ecr get-login-password command, you obtain the necessary authentication token, enabling you to successfully log in and push images to your ECR repository.
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+AWS Network Firewall allows you to implement a Drop action rule that can block any suspicious traffic across your VPC when triggered by new findings from GuardDuty, effectively enhancing your security posture
 In AWS Control Tower, by setting the aft_feature_enterprise_support flag to True, AFT automatically configures newly provisioned accounts to have the Enterprise Support plan. Redeploying AFT applies this change seamlessly.
 CloudFormation can be used to deploy both the AWS Lambda function and API Gateway REST API
+The EventBridge Input Transformer allows you to extract specific parameters from the source JSON payload using Input Paths, and reformat or restructure them using an Input Template into the exact shape expected by downstream targets.
 Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that are aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs
 You can create one or more aliases for your Lambda function. A Lambda alias is like a pointer to a specific function version. Users can access the function version using the alias Amazon Resource Name (ARN). You can add multiple versions of a function to an alias and configure a weighting to direct percentages of traffic to one version or another
 Elastic Beanstalk uses ELB health checks (basic health), or with enhanced health it monitors application logs and the state of your environment's other resources. It does not use CloudWatch alarms
 Amazon AppFlow is used to automate bi-directional data flows between SaaS applications and AWS services.
+resolving the UPDATE_ROLLBACK_FAILED status requires addressing any underlying issues, such as permissions, before running the continue-update-rollback command. This action allows AWS CloudFormation to resume the rollback process and restore the stack to a stable state, which is crucial for effective stack management and maintaining application availability
 An AWS Lambda hook is one Lambda function specified with a string on a new line after the name of the lifecycle event. Each hook is executed once per deployment. Here are descriptions of the hooks available for use in your AppSpec file.
 Hooks available for use in  AppSpec file. BeforeAllowTraffic – Use to run tasks before traffic is shifted to the deployed Lambda function version. AfterAllowTraffic – Use to run tasks after all traffic is shifted to the deployed Lambda function version
 AWS Copilot to analyze and inventory the on-premises application and then containerize it on Amazon ECS
@@ -219,7 +222,19 @@ You use EventBridge (formerly CloudWatch Events) to monitor and react to Trusted
 CloudWatch LogsMetric Filter -> Cloudwatch Metric -> Cloudwatch Alarm
 Systems Manager Session Manager enables secure remote access to EC2 instances without the need to open ports for SSH or create bastion hosts
 When creating a new API route, create a new API stage
+AWS Systems Manager Inventory collects OS and software configurations natively
+ AWS CDK Aspects allow engineers to implement validation hooks that intercept and analyze the complete generated construct tree during the synthesis phase, failing compilation safely before target execution
+Amazon EventBridge notifications paired with an Amazon SQS buffer queue is the most robust architecture for massive bursts
+ CloudWatch agent + Logs + Metric Filter is the standard pattern to extract custom metrics from log data and alarm on them
+ EventBridge supports advanced routing and fan-out from a single event source, avoiding multiple S3 event configurations.
+KEDA is an EKS-supported autoscaler that enables event-driven scaling of Kubernetes workloads from virtually any metric source, including CloudWatch. Its CloudWatch scaler lets you define the exact metric and target value.
+ECS Service Auto Scaling with a Target Tracking policy on the SQS ApproximateNumberOfMessagesVisible CloudWatch metric is the native, recommended pattern. It directly correlates queue depth to the number of processing tasks.
 ASG can also scale based on an Amazon Simple Queue Service (SQS) queue
+The standard CloudWatch metric 'StatusCheckFailed_System' tracks hardware infrastructure/hypervisor health. Attaching an EC2 recovery action directly to this alarm cleanly recreates the exact instance with its precise configurations (EBS attachments, metadata, and IPs) on working underlying host hardware automatically
+Amazon Aurora utilizes a specialized, highly resilient, decoupled storage architecture that natively and dynamically auto-scales volume space up to 128 TiB without explicit provisioning or operational scripts, mitigating storage allocation management risks completely
+Amazon Route 53 cannot see failures “behind” an ALB if the ALB itself is still responding successfully.
+Karpenter with a placeholder deployment (overprovisioning) is a standard professional pattern to maintain warm compute capacity within Kubernetes for rapid spikes, avoiding the slow standard scaling loops of CloudWatch and EC2 Auto Scaling groups
+ ECS Capacity Providers link the requirements of container tasks directly with the scaling mechanics of EC2 ASGs. With managed scaling enabled, ECS ensures that appropriate EC2 capacity is added *before* tasks fail placement due to resource constraints.
 The Fanout scenario is when a message published to an SNS topic is replicated and pushed to multiple endpoints, such as Firehose delivery streams, Amazon SQS queues, HTTP(S) endpoints, and Lambda functions. This allows for parallel asynchronous processing
 BlueInstanceTerminationOption is a real AWS CodeDeploy property/object. It controls what happens to the original “blue” instances after a successful blue/green deployment, with valid actions like TERMINATE or KEEP_ALIVE, and it does not apply to Lambda deployments
 You cannot use Amazon Athena to query logs published to Amazon CloudWatch Logs
