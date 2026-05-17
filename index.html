@@ -353,7 +353,10 @@ Enabling AWS Config is a prerequisite for using AWS Firewall Manager
 AWS Elastic Disaster Recovery (AWS DRS) minimizes downtime and data loss with fast, reliable recovery of on-premises and cloud-based applications using affordable storage, minimal compute, and point-in-time recovery
 AWS Systems Manager (SSM) Run Command is the recommended tool for ad-hoc, one-time configuration changes
 AWS Security Hub uses AWS Config rules as its primary mechanism for continuous security and compliance posture management
-Configure CloudWatch Metric Streams to stream real-time metrics data to Kinesis Data Firehose which will then stream data to S3. 
+AWS AppConfig is explicitly designed to validate, deploy, and monitor configuration changes at runtime. It features built-in syntactical/semantic validators, controlled deployment strategies, and automatic rollback triggers integrated directly with Amazon CloudWatch Alarms
+Configure CloudWatch Metric Streams to stream real-time metrics data to Kinesis Data Firehose which will then stream data to S3.
+The FailureToleranceCount (or percentage) parameter controls how many account-region deployment failures are allowed to happen before CloudFormation cancels the entire operation
+CloudFormation Change Sets allow you to preview how proposed changes will impact running resources before executing them. Inspecting the change set programmatically using Lambda within a CI/CD pipeline is the standard architectural pattern for evaluating potential structural or destructive impacts on stateful storage layer 
 
 You need CloudWatch Metric for making graphs and alarms`;
 
