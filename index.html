@@ -128,6 +128,7 @@ buildspec file with a post_build phase pushes a Docker image to Amazon ECR
 If you delete an instance from an ASG, it gets replaced
 You can use a Lambda function to process Amazon Simple Notification Service (Amazon SNS) notifications. Amazon SNS supports Lambda functions as a target for messages sent to a topic
 Secrets manager does not support DynamoDB
+CloudFormation StackSets with SERVICE_MANAGED permissions integrates natively with AWS Organizations, enabling automatic deployment to all accounts in an OU, cross-region ordering, and drift detection
 Amazon GuardDuty's "Policy:IAMUser/RootCredentialUsage" finding type detects root credential usage and is triggered when the root user credentials are used to make API calls, which is a critical security concern. This finding helps identify potential unauthorized access or misuse of the root account, allowing you to take immediate action to secure your AWS environment.
 AWS Control Tower provides the Account Factory for automated account provisioning with pre-configured baselines (logging, security). Guardrails (both preventive via SCPs and detective via AWS Config rules) enforce policies like network isolation between OUs
 CDK Constructs published as versioned libraries to a private npm repository (AWS CodeArtifact) allow teams to consume pre-approved, reusable infrastructure components. This approach enforces security standards by embedding compliant defaults
@@ -228,6 +229,7 @@ RDS Storage Autoscaling automatically increases storage when free space is low
 DiskQueueDepth measures the number of I/O requests waiting in the queue. A sustained value above 1 indicates I/O saturation, which can lead to increased latency and degraded performance. Monitoring this metric helps identify when your database is under heavy load and may require scaling or optimization.
 ALB default success codes are 200-399. You can customize this range
 EventBridge event patterns use source and detail-type for S3 Object Created events
+SCPs are the only mechanism that can prevent account leave operations in AWS Organizations, ensuring that critical accounts cannot be removed from the organization without explicit permission.
 CloudWatch cross-account observability enables native aggregation of metrics/logs from multiple accounts into a monitoring account while preserving metadata
 Subscription filters with Firehose provide near real-time, managed streaming of CloudWatch Logs to a central account.
 Namespaces group metrics; dimensions are key–value pairs used to slice metrics such as service and environment.
@@ -237,6 +239,10 @@ Immutable deployments require that each deployment is a complete, self-contained
 AWS App Mesh is a service mesh that provides application-level networking for microservices, including traffic routing, observability, and security. It supports canary deployments with weighted traffic splitting between virtual service versions and integrates with CloudWatch for metrics-based automatic rollback. 
 The file codedeployagent.yml (located at /etc/codedeploy-agent/conf/codedeployagent.yml) controls agent behavior, including proxy, logging level, and root directory.
 Lambda weighted aliases let you route a percentage of traffic to a new version 
+Amazon EventBridge Pipes are optimized for simple event ingestion and point-to-point integrations, not full orchestration or complex workflows. For more complex scenarios, Step Functions or custom Lambda orchestration may be more appropriate.
+State Manager is specifically designed to maintain desired state configurations on managed instances. It continuously enforces configurations on a schedule (every 15 minutes), automatically applies to new instances matching the target tags, and reports compliance status.
+CDK Aspects provide a powerful way to apply cross-cutting concerns across an entire construct tree. They can validate resources at synthesis time and fail fast before any CloudFormation deployment occurs. This makes them ideal for enforcing security policies, such as ensuring all S3 buckets have encryption enabled or that no security groups allow unrestricted access. By using Aspects, you can ensure compliance with security standards across your entire CDK application without relying on post-deployment checks.
+AWS IAM Identity Center manages federated workforce access to AWS accounts and applications, but it does not control or replace the AWS account root user access, which should be secured with MFA and not used for daily operations.
 Amazon EFS supports ReadWriteMany access mode across multiple pods in EKS, while EBS supports only ReadWriteOnce for single-node access. For shared storage across multiple instances, EFS is the appropriate choice.
 AWS Secrets Manager integrates natively with CodeBuild via the env secrets-manager buildspec block
 CodeArtifact authorization tokens are short-lived (12-hour default, configurable up to 12 hours). The buildspec must dynamically fetch a token using aws codeartifact get-authorization-token at build start and configure the npm registry URL with that token. 
