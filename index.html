@@ -228,7 +228,19 @@ ECR private repositories with IAM policies and image scanning (via ECR Image Sca
 RDS Storage Autoscaling automatically increases storage when free space is low 
 DiskQueueDepth measures the number of I/O requests waiting in the queue. A sustained value above 1 indicates I/O saturation, which can lead to increased latency and degraded performance. Monitoring this metric helps identify when your database is under heavy load and may require scaling or optimization.
 ALB default success codes are 200-399. You can customize this range
+CloudWatch anomaly detection uses ML to learn historical patterns including seasonality, and generates an intelligent band. It alerts on unusual deviations even when static thresholds are not crossed, making it ideal for detecting gradual baseline drift
+CloudWatchAgentServerPolicy is the AWS managed policy specifically designed for EC2 instances running the CloudWatch agent. It grants the precise permissions required — PutMetricData, CreateLogGroup, CreateLogStream, PutLogEvents, and SSM Parameter Store access for agent config — without over-provisioning.
+CloudWatch metric streams natively support opentelemetry0.7 and JSON output formats and push data directly to a Kinesis Data Firehose delivery stream in near-real time
+CloudWatch Logs only supports setting a retention period (delete after N days) — it has no native infrequent-access tier.
+CloudWatch Logs subscription filters support Kinesis Data Streams and Lambda as real-time destinations. Kinesis Firehose can read from a Kinesis Data Stream and deliver to OpenSearch with built-in buffering and retrys, making it the recommended pattern for real-time log ingestion into OpenSearch.
+Metric filters on CloudWatch Logs log groups are the native, lowest-latency path to turning log events into CloudWatch metrics. The CloudWatch agent pushes logs in near-real time, and the metric filter evaluates every incoming log event immediately, publishing to the chosen custom namespace
+CloudWatch Logs subscription filters with Kinesis Data Firehose + Lambda transformation is the recommended pattern for real-time ingestion into OpenSearch, supporting filtering and enrichment before delivery.
+CloudWatch Logs Insights is designed for fast, interactive search across multiple log groups with pattern syntax and aggregations. It's optimized for TB-scale data within CloudWatch native storage.
 EventBridge event patterns use source and detail-type for S3 Object Created events
+Athena is serverless, cost‑effective, and can directly query S3‑based VPC Flow Logs and ALB logs using SQL. Partitioning optimizes performance for historical analysis, making it ideal for ad‑hoc security investigations.
+CloudWatch Logs supports up to two subscription filters per log group. One filter can target Lambda (which synchronously indexes to OpenSearch within the latency budget) and the second targets Kinesis Firehose for S3 archival and/or OpenSearch with buffering and retries.
+ CloudWatch metric streams natively stream metrics to destinations like Kinesis Data Firehose, which can deliver to S3 with low latency (~1 min) and minimal custom code.   
+CloudWatch Logs supports KMS CMK at log group level. TLS encrypts data in transit automatically when using CloudWatch endpoints and is not a separate configuration for log data.
 SCPs are the only mechanism that can prevent account leave operations in AWS Organizations, ensuring that critical accounts cannot be removed from the organization without explicit permission.
 CloudWatch cross-account observability enables native aggregation of metrics/logs from multiple accounts into a monitoring account while preserving metadata
 Subscription filters with Firehose provide near real-time, managed streaming of CloudWatch Logs to a central account.
