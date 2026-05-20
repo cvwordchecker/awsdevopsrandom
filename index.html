@@ -147,11 +147,15 @@ You cannot create an HTTPS listener with an NLB
 CloudFormation stacks are best used for infrastructure deployments and updates and not for application/code level changes
 Amazon CloudWatch alarm that monitors an Amazon EC2 instance and automatically recovers the instance if it becomes impaired due to an underlying hardware failure or a problem that requires AWS involvement to repair.The alarm uses the StatusCheckFailed_System metric and can be configured to initiate a recover action
 You can monitor CodePipeline events in EventBridge
+DynamoDB Global Tables, ElastiCache Global Datastore, and MemoryDB Global Datastore provide native active-active cross-Region replication for key-value / in-memory stores with sub-second failover
+ RDS Multi-AZ maintains a synchronous standby in a different AZ. On failure AWS automatically updates the DNS CNAME to the standby, providing failover typically in 60–120 seconds
  StackSets enable centralized deployment of CloudFormation stacks across multiple accounts and regions from a management account
 You can associate more than one deployment group with an application in CodeDeploy. This makes it possible to deploy an application revision to different sets of instances at different times or in parallel
 EventBridge routes that data to targets such as AWS Lambda and Amazon Simple Notification Service
 With a CodeDeploy ‘CodeDeployDefault.HalfAtAtime’ deployment strategy, half of the instances will be updated at a time
 API actions are tracked by AWS CloudTrail but not by Amazon CloudWatch
+S3 CRR asynchronously replicates objects to destination bucket, typically completing within 15 minutes for 99.99% of objects
+A pre-baked AMI (A) eliminates bootstrap time because all software is installed and configured; instances are serving traffic seconds after launch. In contrast, a fresh AMI (B) requires time to download and install software during instance initialization, leading to longer startup times and potential cold start issues.
 A separate deployment group can be specified to deploy the updates in parallel. These deployment groups can be created within a single CodeDeploy application. You cannot select multiple CodeDeploy applications within the pipeline.
 Tags are not propagated to Amazon EBS volumes. To add tags to Amazon EBS volumes, specify the tags in a launch template
 Amazon GuardDuty is a threat detection service that continuously monitors for malicious activity and unauthorized behavior to protect your AWS accounts, EC2 workloads, container applications, and data stored in Amazon Simple Storage Service (S3)
@@ -159,6 +163,9 @@ An EC2 instance is scheduled for retirement when AWS detects an irreparable fail
 The DevOps engineer can add a lifecycle hook to the AWS Auto Scaling group to move instances in the Terminating state to the Terminating:Wait state. In this state, the engineer can access instances before they're terminated, and then troubleshoot why they were marked as unhealthy
 You can create custom metrics to send to Amazon CloudWatch. With custom metrics you can choose standard or high resolution and you can aggregate multiple data points and publish data as a statistic set to reduce cost and increase efficiency.The resolutions are:Standard resolution, with data having a one-minute granularity and High resolution, with data at a granularity of one second.
 CloudTrail Logs are for streaming not bulk downloads
+DynamoDB Global Tables provides multi-Region, active-active writes with eventual consistency. Last-writer-wins conflict resolution is automatic. Strong consistency is only available within a single Region, not across Regions 
+The warm standby pattern requires a continuously running but reduced-capacity environment in the DR region, ready to scale to full capacity quickly
+Multi-AZ with automatic failover keeps a synchronous replica in a different AZ. If the primary fails, ElastiCache promotes the replica automatically with minimal disruption and no data loss for in-memory state.
 Use EventBridge to capture the real-time workflows of CodePipeline, allowing you to funnel relevant state changes to an SNS topic, which can then trigger notifications or other automated actions based on the pipeline's progress and status
 AWS CodePipeline state change events (such as pipeline execution changes, stage changes, or action state changes) are typically emitted to Amazon EventBridge, allowing you to set up rules that trigger on specific pipeline events. However, AWS Config is not designed to monitor or react to CodePipeline state changes, as it focuses on resource configuration compliance rather than event-driven monitoring of pipeline executions.
 Configuring an EventBridge event to invoke the RefreshCache command effectively updates the Storage Gateway's cache
@@ -228,6 +235,15 @@ ECR private repositories with IAM policies and image scanning (via ECR Image Sca
 RDS Storage Autoscaling automatically increases storage when free space is low 
 DiskQueueDepth measures the number of I/O requests waiting in the queue. A sustained value above 1 indicates I/O saturation, which can lead to increased latency and degraded performance. Monitoring this metric helps identify when your database is under heavy load and may require scaling or optimization.
 ALB default success codes are 200-399. You can customize this range
+CloudWatch Metric Streams is the dedicated feature for continuously streaming CloudWatch metrics at low latency. It integrates natively with Kinesis Data Firehose, which supports HTTP endpoint destinations (for third-party platforms) with S3 as a backup — all without custom code
+ CloudWatch metric filters are the native, purpose-built way to extract metric data from log events. They support JSON filter patterns (e.g. { $.event_type = "CHECKOUT_FAILURE" }), and you specify the target namespace, metric name, and value directly in the filter definition — no extra infrastructure needed    
+To encrypt a CloudWatch log group with a CMK you must explicitly associate the CMK via associate-kms-key and grant CloudWatch Logs the necessary KMS permissions — without the correct key policy the association will fail 
+HTTPS health checks against a specific endpoint/path provide application-level health validation, not merely network connectivity
+Amazon Elastic Container Service (Amazon ECS) services that use AWS Application Auto Scaling can have multiple target tracking scaling policies attached at the same time
+CloudWatch anomaly detection uses machine learning to establish baselines and detect deviations from normal patterns, which is ideal for intermittent, non-schedule-based spikes.
+CloudWatch Logs Insights is suitable for smaller volumes or real-time, but Athena excels for long-term analysis.
+Amazon Amazon Web Services Amazon CloudWatch metrics are automatically encrypted at rest by AWS using service-managed encryption. There is currently no option to use customer-managed AWS KMS keys (CMKs) for CloudWatch metrics storage
+By default, EC2 Auto Scaling using EC2 health checks only verifies instance-level health (power state, hypervisor reachability, OS/network checks). If the application process crashes but the OS is still running, the instance remains healthy from EC2’s perspective and stays InService. To detect application-level failures, you must configure ELB health checks in the Auto Scaling group, which will mark instances as Unhealthy if the application fails to respond properly, triggering replacement.
 CloudWatch anomaly detection uses ML to learn historical patterns including seasonality, and generates an intelligent band. It alerts on unusual deviations even when static thresholds are not crossed, making it ideal for detecting gradual baseline drift
 CloudWatchAgentServerPolicy is the AWS managed policy specifically designed for EC2 instances running the CloudWatch agent. It grants the precise permissions required — PutMetricData, CreateLogGroup, CreateLogStream, PutLogEvents, and SSM Parameter Store access for agent config — without over-provisioning.
 CloudWatch metric streams natively support opentelemetry0.7 and JSON output formats and push data directly to a Kinesis Data Firehose delivery stream in near-real time
