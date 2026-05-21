@@ -154,6 +154,10 @@ You can associate more than one deployment group with an application in CodeDepl
 EventBridge routes that data to targets such as AWS Lambda and Amazon Simple Notification Service
 With a CodeDeploy ‘CodeDeployDefault.HalfAtAtime’ deployment strategy, half of the instances will be updated at a time
 API actions are tracked by AWS CloudTrail but not by Amazon CloudWatch
+CloudFront Origin Groups provide native failover: if the primary origin returns configured error codes (e.g. 5xx, 404), CloudFront automatically retries the request against the secondary origin
+AWS Backup is a fully managed, policy-based service to centrally manage backups across AWS services. It natively supports cross-Region copy and lifecycle management for EBS, RDS, DynamoDB, etc
+Aurora Global Database uses storage-based replication with typical lag under 1 second, giving RPO in seconds. Planned managed failover completes in under a minute.
+Aurora Global Database supports managed planned failover (--failover-type Planned) that switches roles seamlessly, zero data loss, and does not impact ongoing operations in primary region.
 S3 CRR asynchronously replicates objects to destination bucket, typically completing within 15 minutes for 99.99% of objects
 A pre-baked AMI (A) eliminates bootstrap time because all software is installed and configured; instances are serving traffic seconds after launch. In contrast, a fresh AMI (B) requires time to download and install software during instance initialization, leading to longer startup times and potential cold start issues.
 A separate deployment group can be specified to deploy the updates in parallel. These deployment groups can be created within a single CodeDeploy application. You cannot select multiple CodeDeploy applications within the pipeline.
@@ -163,6 +167,13 @@ An EC2 instance is scheduled for retirement when AWS detects an irreparable fail
 The DevOps engineer can add a lifecycle hook to the AWS Auto Scaling group to move instances in the Terminating state to the Terminating:Wait state. In this state, the engineer can access instances before they're terminated, and then troubleshoot why they were marked as unhealthy
 You can create custom metrics to send to Amazon CloudWatch. With custom metrics you can choose standard or high resolution and you can aggregate multiple data points and publish data as a statistic set to reduce cost and increase efficiency.The resolutions are:Standard resolution, with data having a one-minute granularity and High resolution, with data at a granularity of one second.
 CloudTrail Logs are for streaming not bulk downloads
+CodePipeline supports event filtering on branch reference. Separate pipelines for feature, develop, main provide clear separation of concerns, different gates, and artifact promotion paths.
+The Lambda function itself can still have the normal Lambda service timeout of up to 15 minutes, but CodePipeline’s synchronous action integration only waits 5 minutes before timing out
+AWS Backup Vault Lock provides WORM protection. In compliance mode, no user - including root - can delete backups or shorten retention. 
+RPO (Recovery Point Objective) is the maximum acceptable amount of data loss measured in time . RTO (Recovery Time Objective) is the maximum acceptable downtime to restore service. Remember: RPO = how much data can you lose, RTO = how long until you're back up
+AWS Global Accelerator continuously monitors endpoint health and automatically reroutes traffic to the next optimal, healthy AWS region in less than a minute.
+Amazon Web Services ECS Service Connect is designed to simplify service-to-service communication within Amazon Elastic Container Service clusters, providing a secure and scalable way for services to discover and connect with each other without needing to manage complex networking configurations or service discovery mechanisms.
+HTTP APIs have higher default rate limits of 10000 RPS with burst and lower cost, making them better for high scale.
 DynamoDB Global Tables provides multi-Region, active-active writes with eventual consistency. Last-writer-wins conflict resolution is automatic. Strong consistency is only available within a single Region, not across Regions 
 The warm standby pattern requires a continuously running but reduced-capacity environment in the DR region, ready to scale to full capacity quickly
 Multi-AZ with automatic failover keeps a synchronous replica in a different AZ. If the primary fails, ElastiCache promotes the replica automatically with minimal disruption and no data loss for in-memory state.
