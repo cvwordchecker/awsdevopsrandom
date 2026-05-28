@@ -195,6 +195,8 @@ Although Secrets Manager supports up to 64 KB per secret, it is designed for man
 Amazon API Gateway endpoints are exposed over HTTPS only, meaning traffic is encrypted in transit using TLS; it does not provide plain HTTP endpoints for invoking APIs
 The serverless services can be deployed via SAM but should then be updated via the sam deploy command.
 You cannot use Elastic Beanstalk to deploy these serverless services
+CloudWatch Event Rule does not support CodeDeploy as a target
+Elastic Beanstalk uses ELB health checks (basic health), or with enhanced health it monitors application logs and the state of your environment's other resources. It does not use CloudWatch alarm
 Use AWS Proton to build a service template for refactoring the on-premises application to a container running on Amazon EKS Distro
 Elastic Load Balancing provides access logs that capture detailed information about requests sent to your load balancer. Each log contains information such as the time the request was received, the client's IP address, latencies, request paths, and server responses. You can use these access logs to analyze traffic patterns and troubleshoot issues
 Service Catalog provides a centralized way to manage approved infrastructure templates as products. Portfolio constraints enforce security standards by restricting which parameters can be modified and what values are allowed. Launch constraints control who can provision resources, while template constraints ensure critical security configurations cannot be modified
@@ -204,6 +206,9 @@ Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto S
 Amazon ECR requires authentication before allowing Docker operations, unlike S3. By using the aws ecr get-login-password command, you obtain the necessary authentication token, enabling you to successfully log in and push images to your ECR repository.
 EC2 instance status checks do not check the application, they check the underlying instance, software, and network connectivity.
 CloudWatch can observe S3 API if CloudTrail enabled
+CodeDeploy cannot deploy to AWS CodePipeline. CodeDeploy can only deploy to EC2, on-premise, Lambda, and ECS
+CodePipeline cannot invoke another CodePipeline directly, but it can trigger an EventBridge event that starts another pipeline, enabling decoupled orchestration between pipelines.
+CloudWatch Logs agent can only be used for continuous log streaming, and NOT for a one-time log extract to S3
 AWS Network Firewall allows you to implement a Drop action rule that can block any suspicious traffic across your VPC when triggered by new findings from GuardDuty, effectively enhancing your security posture
 AWS Config records configuration changes to supported resources and can track the evolution of IAM roles, policies, and some related entities over time. However, it does not capture every API call or provide a detailed audit log of who invoked which action and from where
 In AWS Control Tower, by setting the aft_feature_enterprise_support flag to True, AFT automatically configures newly provisioned accounts to have the Enterprise Support plan. Redeploying AFT applies this change seamlessly.
